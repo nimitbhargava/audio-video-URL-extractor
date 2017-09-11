@@ -25,14 +25,19 @@ $('audio source, video source').each(function () {
     else videoSource.push(source);
 });
 
-console.log("audio links");
-audioSource.forEach(function (audio) {
-    console.log(audio);
-});
-console.log("video links");
-videoSource.forEach(function (video) {
-    console.log(video);
-});
+if (audioSource.length) {
+    console.log("Audio Links -");
+    audioSource.forEach(function (audio) {
+        console.log(audio);
+    });
+}
+
+if (videoSource.length) {
+    console.log("Video Links -");
+    videoSource.forEach(function (video) {
+        console.log(video);
+    });
+}
 
 browser.close();
 
