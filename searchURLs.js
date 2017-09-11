@@ -12,9 +12,13 @@ await page.goto('https://www.w3schools.com/tags/tag_video.asp');
 const DOMstring = await page.content();
 
 const cheerio = require('cheerio');
+
+// HTML <audio> Tag - https://www.w3schools.com/tags/tag_audio.asp
 var audioTag = '<audio controls>    <source src="horse.ogg" type="audio/ogg">    <source src="horse.mp3" type="audio/mpeg">    Your browser does not support the audio tag.</audio>';
+// HTML <video> Tag - https://www.w3schools.com/tags/tag_video.asp
 var videoTag = '<video width="320" height="240" controls>    <source src="movie.mp4" type="video/mp4">    <source src="movie.ogg" type="video/ogg">    Your browser does not support the video tag.</video>';
 var testHTML = audioTag + videoTag;
+
 const $ = cheerio.load(testHTML);
 
 var audioSource = [], videoSource = [];
