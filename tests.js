@@ -21,50 +21,49 @@ var testCase2 = '<div class="sqs-audio-embed" data-url="https://static1.squaresp
 var testCase3 = '<div class="dropdown share-dropdown" id="downloadsButton"><button class="share-drop dropdown-toggle" data-toggle="dropdown"><i class="fa fa-download"></i><span class="hidden-xs">download</span></button><div class="dropdown-menu" role="menu" aria-labelledby="dLabel"><a class="btn" href="http://cdnapi.kaltura.com/p/537811/sp/53781100/playManifest/entryId/1_zaatpsw0/flavorId/1_vs6gl6x6/protocol/http/format/url/a.mp4" download="john-cleese-on-creativity-group-dynamics-and-celebrity-lq.mp4">SD video</a><a class="btn" href="http://cdnapi.kaltura.com/p/537811/sp/53781100/playManifest/entryId/1_zaatpsw0/flavorId/1_9ymnkm7b/protocol/http/format/url/a.mp3" download="john-cleese-on-creativity-group-dynamics-and-celebrity.mp3">audio</a></div></div>';
 const $ = cheerio.load(testCase3);
 
-getAudioVideoURLs();
+var audioSource = [], videoSource = [];
+$('audio source, video source, .sqs-audio-embed, .share-dropdown > .dropdown-menu > .btn').each(function () {
+    var source = $(this).attr('src');
+
+    var isAudioSource = $(this).is('audio source');
+    var isSQSAudioEmbed = $(this).is('.sqs-audio-embed');
+    var isShareDropDownAnchorButton = $(this).is('.share-dropdown > .dropdown-menu > .btn');
+    var href = $(this).attr('href');
+    var hrefIsAudio = href.indexOf("mp3") !== -1;
+
+
+    if (isAudioSource) {
+        audioSource.push(source);
+    }
+    else if (isSQSAudioEmbed) {
+        audioSource.push($(this).data('url'));
+    }
+    else if (isShareDropDownAnchorButton) {
+        if (hrefIsAudio) {
+            audioSource.push(href);
+        }
+        else {
+            videoSource.push(href);
+        }
+    } else {
+        videoSource.push(source);
+    }
+});
+
+if (audioSource.length) {
+    console.log("Audio Links -");
+    audioSource.forEach(function (audio) {
+        console.log(audio);
+    });
+}
+
+if (videoSource.length) {
+    console.log("Video Links -");
+    videoSource.forEach(function (video) {
+        console.log(video);
+    });
+}
 
 browser.close();
 
-function getAudioVideoURLs() {
-    var audioSource = [], videoSource = [];
-    $('audio source, video source, .sqs-audio-embed, .share-dropdown > .dropdown-menu > .btn').each(function () {
-        var source = $(this).attr('src');
-
-        var isAudioSource = $(this).is('audio source');
-        var isSQSAudioEmbed = $(this).is('.sqs-audio-embed');
-        var isShareDropDownAnchorButton = $(this).is('.share-dropdown > .dropdown-menu > .btn');
-        var href = $(this).attr('href');
-        var hrefIsAudio = href.indexOf("mp3") !== -1;
-
-
-        if (isAudioSource) {
-            audioSource.push(source);
-        }
-        else if (isSQSAudioEmbed) {
-            audioSource.push($(this).data('url'));
-        }
-        else if (isShareDropDownAnchorButton) {
-            if (hrefIsAudio) {
-                audioSource.push(href);
-            }
-            else {
-                videoSource.push(href);
-            }
-        } else {
-            videoSource.push(source);
-        }
-    });
-
-    showLinksIfAvailable(audioSource, "Audio");
-    showLinksIfAvailable(videoSource, "Video");
-}
-
-function showLinksIfAvailable(source, type) {
-    if (source.length) {
-        console.log(type + " Links -");
-        source.forEach(function (link) {
-            console.log(link);
-        });
-    }
-}
 })();
