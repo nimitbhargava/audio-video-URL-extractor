@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "puppeteer": "^0.10.2",
-    "fs": "^0.0.1-security"
+    "fs": "^0.0.1-security",
+    "cheerio": "^1.0.0-rc.2"
   }
 }
