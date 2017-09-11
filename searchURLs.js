@@ -34,7 +34,6 @@ function getAudioVideoURLs() {
         var isSQSAudioEmbed = $(this).is('.sqs-audio-embed');
         var isShareDropDownAnchorButton = $(this).is('.share-dropdown > .dropdown-menu > .btn');
         var href = $(this).attr('href');
-        var hrefIsAudio = href.indexOf("mp3") !== -1;
 
 
         if (isAudioSource) {
@@ -44,6 +43,7 @@ function getAudioVideoURLs() {
             audioSource.push($(this).data('url'));
         }
         else if (isShareDropDownAnchorButton) {
+            var hrefIsAudio = href.indexOf("mp3") !== -1;
             if (hrefIsAudio) {
                 audioSource.push(href);
             }
